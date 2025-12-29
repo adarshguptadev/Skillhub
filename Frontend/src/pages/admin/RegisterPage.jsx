@@ -70,7 +70,7 @@ const RegisterPage = () => {
                    
                     <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 space-y-6">
                         <div className="text-center">
-                            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Studenthub</h2>
+                            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Skillhub</h2>
                             <p className="mt-2 text-sm text-gray-600">Register to your account</p>
                         </div>
 

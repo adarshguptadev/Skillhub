@@ -109,7 +109,7 @@ const Sidebar = () => {
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-semibold text-gray-900">StudentHub</span>
+              <span className="text-sm font-semibold text-gray-900">Skillhub</span>
             </div>
           </Link>
 

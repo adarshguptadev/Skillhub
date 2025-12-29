@@ -14,12 +14,12 @@ const Protect = ({ children }) => {
                 });
 
                 if (!response.data.success) {
-                    navigate('/login');
+                    navigate('/home');
                 } else {
                     setIsLoading(false);
                 }
             } catch (error) {
-                navigate('/login');
+                navigate('/home');
             }
         };
 

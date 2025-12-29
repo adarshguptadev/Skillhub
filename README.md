@@ -1,13 +1,17 @@
-# Student Learning Web Platform
+# SkillHub – Student Learning Web Platform
+SkillHub helps students follow a structured learning path instead of random YouTube hopping.
+
 
 This is a **student-focused web platform** designed to provide **personalized learning resources** based on student type and interests.  
 Students can login and access their **daily quiz, roadmap, YouTube tutorials, and explore lessons** for efficient learning without wasting time.  
 
 The platform also includes an **admin panel** to manage all content and users.
-
+---
+## 🌐 Live Demo
+Live: https://skillhub-web.vercel.app 
 ---
 
-## 🚀 Features (Initial Commit)
+## 🚀 Features
 ### Student Features:
 - Student login and forgot password functionality
 - Personalized Home page based on student type:
@@ -23,6 +27,9 @@ The platform also includes an **admin panel** to manage all content and users.
 - Open external links for learning resources
 
 ### Admin Features:
+- A maximum of **2 admin accounts** are allowed.
+- Admin registration is **restricted and not public**.
+- Admin accounts are created manually by the system owner.
 - Admin login
 - CRUD (Create, Read, Update, Delete) for:
   - Roadmaps
@@ -38,13 +45,63 @@ The platform also includes an **admin panel** to manage all content and users.
 - Backend: Node.js, Express
 - Database: MongoDB
 - Deployment: Vercel (frontend), Render (backend)
+- Email Functionality : Forgot Password emails are handled using Brevo SMTP
 
 ---
 
 ## 📦 Installation
-Clone the repository and install dependencies:
+Clone the repository
 
 ```bash
-git clone https://github.com/Adarshgupta0/project-name.git
-cd project-name
+git clone https://github.com/Adarshgupta0/Skillhub.git
+cd Skillhub
+```
+---
+## Backend Setup
+```bash
+cd backend
 npm install
+```
+## 🔐 Create .env file in backend folder
+Create a file named .env inside the backend directory and add the following environment variables:
+```
+# Database Configuration
+DB_CONNECT=mongodb://127.0.0.1:27017/skillhub
+
+# Frontend URL
+FRONTEND_URL=your_frontend_url
+
+# JWT Configuration
+JWT_SECRET=your_jwt_secret_key
+
+# Cloudinary Configuration
+API_KEY=your_cloudinary_api_key
+API_SECRET=your_cloudinary_api_secret
+CLOUD_NAME=your_cloudinary_cloud_name
+
+# Brevo SMTP Configuration (Email Service)
+SMTP_HOST=your_smtp_server
+SMTP_PORT=your_smtp_port
+SMTP_USER=your_smtp_login
+SMTP_PASS=your_smtp_key
+```
+---
+## Frontend Setup
+```bash
+cd frontend
+npm install
+```
+## 🔐 Create .env file in frontend folder
+Create a file named .env inside the frontend directory and add:
+```
+VITE_BACKEND_URL=your_backend_url
+```
+---
+## Start Frontend Server
+```
+npm run dev
+```
+## Start Backend Server
+```
+npm start
+```
