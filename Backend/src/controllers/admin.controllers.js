@@ -6,13 +6,12 @@ const { createadmin } = require("../services/admin.create");
 const { hashPassword, comparePassword } = require("../services/hashPassword")
 const { generateToken } = require("../services/JwtToken");
 const AdminOtpModel = require("../models/admin.otp.model")
-const nodemailer = require("nodemailer");
 const sharp = require("sharp");
 const cloudinary = require("../utils/cloudinary");
 const lessonmodel = require("../models/lesson.model")
 const tutorialmodel = require("../models/tutorial.model")
 const roadmapmodel = require("../models/roadmap.model")
-
+const { Resend } = require("resend");
 
 
 
@@ -39,6 +38,131 @@ module.exports.register = async function (req, res, next) {
         const admin = await createadmin(name, email, hashpass);
 
         const token = generateToken(admin);
+
+        const resend = new Resend(process.env.RESEND_API_KEY);
+
+
+        const { error } = await resend.emails.send({
+            from: process.env.SENDER_EMAIL,
+            to: [admin.email],
+            subject: "Welcome to SkillHub - Account Created Successfully",
+
+            html: `
+    <div
+      style="
+        font-family: Arial, sans-serif;
+        background:#f4f7fb;
+        padding:40px 20px;
+      "
+    >
+      <div
+        style="
+          max-width:600px;
+          margin:auto;
+          background:#ffffff;
+          border-radius:12px;
+          padding:40px;
+          border:1px solid #e5e7eb;
+        "
+      >
+
+        <div style="text-align:center;">
+          <h1 style="margin:0; color:#111827;">
+            Welcome to SkillHub 
+          </h1>
+
+          <p style="color:#6b7280; margin-top:8px;">
+            Your account has been created successfully
+          </p>
+        </div>
+
+        <div style="margin-top:35px;">
+
+          <h2
+            style="
+              color:#111827;
+              margin-bottom:10px;
+            "
+          >
+            Hello, ${admin.name || "User"} (admin) !
+          </h2>
+
+          <p
+            style="
+              font-size:15px;
+              line-height:1.7;
+              color:#374151;
+            "
+          >
+            Welcome to <strong>SkillHub</strong>!
+            We're excited to have you onboard.
+          </p>
+
+          <p
+            style="
+              font-size:15px;
+              line-height:1.7;
+              color:#374151;
+              margin-top:15px;
+            "
+          >
+            Your account is now ready and you can start exploring
+            all the features available on SkillHub.
+          </p>
+
+          <div
+            style="
+              margin-top:25px;
+              padding:16px;
+              background:#f9fafb;
+              border-radius:8px;
+              border:1px solid #e5e7eb;
+            "
+          >
+            <p
+              style="
+                margin:0;
+                font-size:14px;
+                color:#4b5563;
+                line-height:1.7;
+              "
+            >
+              Thank you for joining SkillHub.
+              We hope you have a great experience with our platform 
+            </p>
+          </div>
+
+        </div>
+
+        <hr
+          style="
+            border:none;
+            border-top:1px solid #e5e7eb;
+            margin:35px 0;
+          "
+        />
+
+        <p
+          style="
+            font-size:12px;
+            color:#9ca3af;
+            text-align:center;
+            line-height:1.6;
+          "
+        >
+          © ${new Date().getFullYear()} SkillHub.
+          All rights reserved.
+        </p>
+
+      </div>
+    </div>
+  `,
+        });
+
+        if (error) {
+            console.error("Email sending error:", error);
+            return res.status(500).json({ success: false, message: "Failed to send welcome email" });
+        }
 
 
         res.cookie("adminAuthToken", token, {
@@ -137,40 +261,139 @@ module.exports.forgot_password = async function (req, res, next) {
         const name = admin.name;
         const adminotp = otpid.otp;
 
+        const resend = new Resend(process.env.RESEND_API_KEY);
 
-        const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
-            port: Number(process.env.SMTP_PORT),
-            secure: false,
-            auth: {
-                user: process.env.SMTP_USER,
-                pass: process.env.SMTP_PASS
-            }
+        const { error } = await resend.emails.send({
+            from: process.env.SENDER_EMAIL,
+            to: [adminemail],
+            subject: "SkillHub - Password Reset OTP",
+
+            html: `
+     <div
+      style="
+        font-family: Arial, sans-serif;
+        background:#f4f7fb;
+        padding:40px 20px;
+      "
+    >
+      <div
+        style="
+          max-width:600px;
+          margin:auto;
+          background:#ffffff;
+          border-radius:12px;
+          padding:40px;
+          border:1px solid #e5e7eb;
+        "
+      >
+
+        <div style="text-align:center;">
+          <h1 style="margin:0; color:#111827;">
+            SkillHub
+          </h1>
+
+          <p style="color:#6b7280; margin-top:8px;">
+            Password Reset Request
+          </p>
+        </div>
+
+        <div style="margin-top:35px;">
+
+          <h2
+            style="
+              color:#111827;
+              margin-bottom:10px;
+            "
+          >
+            Reset Your Password
+          </h2>
+
+          <p
+            style="
+              font-size:15px;
+              line-height:1.7;
+              color:#374151;
+            "
+          >
+             hii, ${name}(admin)! We received a request to reset your SkillHub account password.
+            Use the OTP below to continue:
+          </p>
+
+          <div
+            style="
+              margin:30px 0;
+              text-align:center;
+            "
+          >
+            <div
+              style="
+                display:inline-block;
+                background:#111827;
+                color:#ffffff;
+                padding:16px 32px;
+                font-size:32px;
+                letter-spacing:8px;
+                font-weight:bold;
+                border-radius:10px;
+              "
+            >
+              ${adminotp}
+            </div>
+          </div>
+
+          <p
+            style="
+              font-size:14px;
+              color:#6b7280;
+              line-height:1.6;
+            "
+          >
+            This OTP will expire in
+            <strong>10 minutes</strong>.
+          </p>
+
+          <p
+            style="
+              font-size:14px;
+              color:#6b7280;
+              line-height:1.6;
+            "
+          >
+            If you did not request a password reset,
+            you can safely ignore this email.
+          </p>
+
+        </div>
+
+        <hr
+          style="
+            border:none;
+            border-top:1px solid #e5e7eb;
+            margin:35px 0;
+          "
+        />
+
+        <p
+          style="
+            font-size:12px;
+            color:#9ca3af;
+            text-align:center;
+            line-height:1.6;
+          "
+        >
+          © ${new Date().getFullYear()} SkillHub.
+          All rights reserved.
+        </p>
+
+      </div>
+    </div>
+  `,
         });
-        await transporter.verify();
-        console.log("SMTP READY");
 
-        let textotp = `Dear [${name}],
-
-We received a request to reset your password. Use the OTP below to proceed with resetting your password.
-
-Your OTP: [${adminotp}]
-
-This OTP is valid for the next 10 minutes. If you didn't request this, please ignore this email.
-
-For security reasons, do not share this OTP with anyone.
-
-Best regards,
-[Skillhub] Team`
-
-
-        const info = await transporter.sendMail({
-            from: "Adarsh Gupta <adarshgupta3335c@gmail.com>",
-            to: adminemail,
-            subject: "Reset Your Password - OTP",
-            text: textotp
-        });
-        console.log("MAIL SENT:", info.messageId);
+        if (error) {
+            console.error("Email sending error:", error);
+            return res.status(500).json({ success: false, message: "Failed to send OTP email" });
+        }
 
         const token = generateToken(admin)
 

@@ -45,7 +45,7 @@ Live: https://skillhub-web.vercel.app
 - Backend: Node.js, Express
 - Database: MongoDB
 - Deployment: Vercel (frontend), Render (backend)
-- Email Functionality : Forgot Password emails are handled using Brevo SMTP
+- Email Functionality : Forgot Password and Welcome emails are handled using Resend API
 
 ---
 
@@ -79,11 +79,9 @@ API_KEY=your_cloudinary_api_key
 API_SECRET=your_cloudinary_api_secret
 CLOUD_NAME=your_cloudinary_cloud_name
 
-# Brevo SMTP Configuration (Email Service)
-SMTP_HOST=your_smtp_server
-SMTP_PORT=your_smtp_port
-SMTP_USER=your_smtp_login
-SMTP_PASS=your_smtp_key
+# Resend API Configuration (Email Service)
+SENDER_EMAIL=your_sender_email
+RESEND_API_KEY=your_api_key
 ```
 ---
 ## Frontend Setup
