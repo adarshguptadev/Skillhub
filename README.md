@@ -8,7 +8,7 @@ Students can login and access their **daily quiz, roadmap, YouTube tutorials, an
 The platform also includes an **admin panel** to manage all content and users.
 ---
 ## 🌐 Live Demo
-Live: https://skillhub-web.vercel.app 
+Live: [skillhub.adarshguptadev.in/home](https://skillhub.adarshguptadev.in/home)
 ---
 
 ## 🚀 Features
